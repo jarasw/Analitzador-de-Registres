@@ -1,0 +1,11 @@
+Informe d'Anàlisi de Fitxer de Registre
+---------------------------------------
+Nombre total de registres: 7
+Registres per tipus:
+	INFO: 3
+	WARNING: 2
+	ERROR: 2
+Adreces IP úniques detectades:
+	192.168.1.100
+Recurrence de la paraula clau 'error': 2
+---------------------------------------
