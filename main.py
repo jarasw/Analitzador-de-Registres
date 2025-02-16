@@ -1,6 +1,6 @@
 #Analitzador de registre Joel Jara
 
-import re # import de pytthon per treballar amb expressiones regulars (https://docs.python.org/es/3.13/library/re.html)
+import re # import de python per treballar amb expressiones regulars (https://docs.python.org/es/3.13/library/re.html)
 
 # Les variables globals:
 FITXER_REGISTRE = 'register.log'  # Nom del fitxer de registre d'entrada
@@ -24,3 +24,62 @@ def llegir_fitxer_registre(nom_fitxer):
     except Exception as e:
         print(f"Error al llegir el fitxer: {e}")
         return []
+    
+def comptar_registres(log_lines):
+    """
+    Comptar el nombre total de registres (línies) en el fitxer de registre.
+    
+    :param log_lines: Llista de línies del fitxer.
+    :return: Nombre total de registres.
+    """
+    return len(log_lines)
+
+def comptar_tipus(log_lines):
+    """
+    Comptar els registres segons el seu tipus (INFO, WARNING, ERROR).
+    Es recorre cada línia i s'incrementa el comptador corresponent si s'hi troba el tipus.
+    
+    :param log_lines: Llista de línies del fitxer.
+    :return: Diccionari amb els comptadors per a cada tipus.
+    """
+    counts = {'INFO': 0, 'WARNING': 0, 'ERROR': 0}
+    for linia in log_lines:
+        # Es comprova cada tipus, si es troba, s'incrementa i es passa a la següent línia.
+        for tipus in counts.keys():
+            if tipus in linia:
+                counts[tipus] += 1
+                break  # Cada línia es considera d'un sol tipus
+    return counts
+
+def identificar_ips(log_lines):
+    """
+    Identifica i retorna les adreces IP úniques trobades en les línies del fitxer.
+    Utilitza una expressió regular per cercar patrons d'IP.
+    
+    :param log_lines: Llista de línies del fitxer.
+    :return: Conjunt d'adreces IP úniques.
+    """
+    ips = set()  # Variable local: conjunt per emmagatzemar IPs úniques
+    # Expressió regular per trobar adreces IP (format: x.x.x.x, on x és de 1 a 3 dígits)
+    pattern = r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b'
+    for linia in log_lines:
+        matches = re.findall(pattern, linia)
+        for ip in matches:
+            ips.add(ip)
+    return ips
+
+def comptar_paraula_clau(log_lines, paraula):
+    """
+    Comptar quantes vegades apareix la paraula clau en els missatges dels registres,
+    sense tenir en compte majúscules o minúscules.
+    
+    :param log_lines: Llista de línies del fitxer.
+    :param paraula: Paraula clau a cercar.
+    :return: Nombre total d'aparicions de la paraula clau.
+    """
+    count = 0  # Variable local per comptar aparicions
+    paraula_lower = paraula.lower()  # Normalitza la paraula a minúscules
+    for linia in log_lines:
+        # Es converteix la línia a minúscules i es compta quantes vegades apareix la paraula
+        count += linia.lower().count(paraula_lower)
+    return count
