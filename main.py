@@ -83,3 +83,45 @@ def comptar_paraula_clau(log_lines, paraula):
         # Es converteix la línia a minúscules i es compta quantes vegades apareix la paraula
         count += linia.lower().count(paraula_lower)
     return count
+
+def generar_informe(total, tipus_counts, ips, keyword, keyword_count):
+    """
+    Genera el text de l'informe amb els resultats de l'anàlisi.
+    
+    :param total: Nombre total de registres.
+    :param tipus_counts: Diccionari amb el recompte per tipus.
+    :param ips: Conjunt d'adreces IP úniques.
+    :param keyword: Paraula clau cercada.
+    :param keyword_count: Nombre d'aparicions de la paraula clau.
+    :return: String amb l'informe complet.
+    """
+    informe = []
+    informe.append("Informe d'Anàlisi de Fitxer de Registre")
+    informe.append("---------------------------------------")
+    informe.append(f"Nombre total de registres: {total}")
+    informe.append("Registres per tipus:")
+    for tipus, count in tipus_counts.items():
+        informe.append(f"\t{tipus}: {count}")
+    informe.append("Adreces IP úniques detectades:")
+    if ips:
+        for ip in ips:
+            informe.append(f"\t{ip}")
+    else:
+        informe.append("\tNo s'han detectat adreces IP.")
+    informe.append(f"Recurrència de la paraula clau '{keyword}': {keyword_count}")
+    informe.append("---------------------------------------")
+    return "\n".join(informe)
+
+def guardar_informe(text_informe, nom_fitxer):
+    """
+    Guarda l'informe generat en un fitxer.
+    
+    :param text_informe: String amb el contingut de l'informe.
+    :param nom_fitxer: Nom del fitxer on es guardarà l'informe.
+    """
+    try:
+        with open(nom_fitxer, 'w', encoding='utf-8') as f:
+            f.write(text_informe)
+        print(f"Informe guardat correctament al fitxer {nom_fitxer}")
+    except Exception as e:
+        print(f"Error en guardar l'informe: {e}")
