@@ -125,3 +125,36 @@ def guardar_informe(text_informe, nom_fitxer):
         print(f"Informe guardat correctament al fitxer {nom_fitxer}")
     except Exception as e:
         print(f"Error en guardar l'informe: {e}")
+        
+def main():
+    """
+    Funció principal del programa.
+    Aquesta funció coordina la lectura del fitxer, l'anàlisi dels registres,
+    la generació de l'informe i la seva visualització/guardat.
+    """
+    # Variable local: llista amb les línies del fitxer de registre
+    log_lines = llegir_fitxer_registre(FITXER_REGISTRE)
+    if not log_lines:
+        print("No s'han pogut llegir registres. S'acaba l'execució del programa.")
+        return
+
+    # Demana a l'usuari que introdueixi la paraula clau per cercar
+    paraula_clau = input("Introdueix la paraula clau per buscar: ")
+
+    # Anàlisi del fitxer de registre
+    total_registres = comptar_registres(log_lines)
+    tipus_counts = comptar_tipus(log_lines)
+    ips_unics = identificar_ips(log_lines)
+    count_keyword = comptar_paraula_clau(log_lines, paraula_clau)
+
+    # Generació de l'informe
+    text_informe = generar_informe(total_registres, tipus_counts, ips_unics, paraula_clau, count_keyword)
+
+    # Mostra l'informe per pantalla
+    print("\n" + text_informe)
+
+    # Opcional: guarda l'informe en un fitxer
+    guardar_informe(text_informe, FITXER_INFORME)
+
+if __name__ == "__main__":
+    main()

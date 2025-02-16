@@ -7,5 +7,5 @@ Registres per tipus:
 	ERROR: 2
 Adreces IP úniques detectades:
 	192.168.1.100
-Recurrence de la paraula clau 'error': 2
+Recurrència de la paraula clau 'error': 3
 ---------------------------------------
